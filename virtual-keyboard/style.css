@@ -35,6 +35,28 @@
        url('assets/fonts/lato-v23-latin-900.woff') format('woff'); /* Chrome 5+, Firefox 3.6+, IE 9+, Safari 5.1+ */
 }
 
+/*Normilize*/
+
+* {
+  padding: 0;
+  margin: 0;
+  border: 0;
+}
+
+*,
+*:before,
+*:after {-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+} 
+
 body {
   font-family: 'Lato', Helvetica, sans-serif;
+  font-style: normal;
+  font-size: 18px;
+  font-weight: 400;
+  color: #fff;
 }
