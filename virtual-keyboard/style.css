@@ -59,4 +59,80 @@ body {
   font-size: 18px;
   font-weight: 400;
   color: #fff;
+  background: rgb(231 222 222);
+}
+
+/*keyboard*/
+
+.container {
+  max-width: 1034px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  padding-top: 60px;
+}
+
+.instruction {
+  padding-top: 20px;
+  font-size: 25px;
+  text-align: center;
+  color: rgb(145, 139, 139);
+  font-weight: 700;
+}
+
+.keyboard__keys {
+  background-color: black;
+  border-radius: 10px;
+  padding: 4px;
+}
+
+.keyboard__input {
+  background: #f5f4e6;
+  border-radius: 10px;
+  width: 100%;
+  min-height: 130px;
+  padding: 15px;
+  outline: none;
+  font-size: 18px;
+  margin-bottom: 40px;
+}
+
+.keyboard__input::placeholder {
+  font-size: 18px;
+  color: rgb(145, 139, 139);
+}
+
+.row {
+  display: flex;
+}
+
+.key {
+  display: flex;
+  width: 60px;
+  height: 60px;
+  background-color: #2f3734;
+  justify-content: center;
+  align-items: center;
+  margin: 4px;
+  transition: .2s all;
+  border-radius: 5px;
+}
+
+.key_backspace {
+  width: 133px;
+}
+
+.key_tab {
+  width: 66px;
+}
+
+.key_caps-lock,
+.key_enter,
+.key_shift {
+  width: 130px; 
+}
+
+.key_space {
+  width: 473px;
 }
