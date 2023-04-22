@@ -26,7 +26,7 @@ const dataEn = [
   { letter: 'p', keyCode: 'KeyP' },
   { letter: '[',  keyCode: 'BracketLeft' },
   { letter: ']',  keyCode: 'BracketRight' },
-  { letter: "'\'",  keyCode: 'Backslash' },
+  { letter: ' \\',  keyCode: 'Backslash' },
   { letter: 'Del', keyCode: 'Delete' },
   { letter: 'CapsLock', keyCode: 'CapsLock' },
   { letter: 'a', keyCode: 'KeyA' },
@@ -74,6 +74,7 @@ function generateWrapperKeyboard() {
   let textarea = document.createElement('textarea');
   textarea.className = 'keyboard__input';
   textarea.setAttribute('placeholder', 'Please, write something...');
+  textarea.setAttribute('onKeyPress', 'return false');
   keyboard.append(textarea);
   let keyboardKeys = document.createElement('div');
   keyboardKeys.className = 'keyboard__keys';
@@ -84,7 +85,7 @@ function generateWrapperKeyboard() {
   container.append(keyboard);
   container.append(instruction);
   document.body.prepend(container);
-
+  
   generateKeyboard(keyboardKeys, dataEn)
 }
 
@@ -171,29 +172,36 @@ function generateKeyboard(container, data) {
   return container;
 }
 
-
-
-const keys = document.querySelectorAll('.key');
-
-document.addEventListener('keydown', (event) => {
-  console.log(event);
-  console.log(event.code);
-  console.log(event.key);
-  console.log(event.keyCode);
+window.addEventListener('keydown', (event) => {
+  const keys = document.querySelectorAll('.key');
+  console.log(event.code)
+  keys.forEach(element => {
+    if(event.code === element.dataset.index) {
+      element.classList.add('key_active');
+       addTextareaValue(element);
+    }
+  })
 })
 
-document.addEventListener('keyup', () => {
-  console.log('1111');
+window.addEventListener('keyup', (event) => {
+  const keys = document.querySelectorAll('.key');
+  keys.forEach(element => {
+    if(event.code === element.dataset.index) {
+      element.classList.remove('key_active');
+      element.classList.add('key_remove');
+    }
+    setTimeout(()=> {
+      element.classList.remove('key_remove');
+  }, 200)
+  })
 })
 
-for(let i = 0; i < keys.length; i++) {
-  keys[i].setAttribute('keyname', keys[i].innerText);
-  //keys[i].setAttribute('lowerCaseName', keys[i].innerText.toLowerCase());
+
+function addTextareaValue(element) {
+  const textarea = document.querySelector('.keyboard__input');
+  textarea.value += element.innerText;
 }
 
-window.addEventListener('keydown', function(e) {
-  for(let i = 0; i < keys.length; i++) {
-      if(e.key == keys[i].getAttribute('keyname')) {
-          keys[i].classList.add('key_active')
-      }}
-    })
+
+
+
