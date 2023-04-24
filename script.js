@@ -24,9 +24,9 @@ const dataEn = [
   { letter: 'i', keyCode: 'KeyI' },
   { letter: 'o', keyCode: 'KeyO' },
   { letter: 'p', keyCode: 'KeyP' },
-  { letter: '[',  keyCode: 'BracketLeft' },
-  { letter: ']',  keyCode: 'BracketRight' },
-  { letter: ' \\',  keyCode: 'Backslash' },
+  { letter: '[', keyCode: 'BracketLeft' },
+  { letter: ']', keyCode: 'BracketRight' },
+  { letter: ' \\', keyCode: 'Backslash' },
   { letter: 'Del', keyCode: 'Delete' },
   { letter: 'CapsLock', keyCode: 'CapsLock' },
   { letter: 'a', keyCode: 'KeyA' },
@@ -177,17 +177,11 @@ window.addEventListener('keydown', (event) => {
   keys.forEach(element => {
     if(event.code === element.dataset.index) {
       element.classList.add('key_active');
-      if(element.innerText !== 'Backspace' && element.innerText !== 'Tab' && element.innerText !== 'Del' && element.innerText !== 'CapsLock' && element.innerText !== 'Enter' && element.innerText !== 'Shift' && element.innerText !== 'Ctrl' && element.innerText !== 'Win' && element.innerText !== 'Alt') {
+      if(element.innerText !== 'Backspace' && element.innerText !== 'Tab' && element.innerText !== 'Del' && element.innerText !== 'CapsLock' && element.innerText !== 'Enter' && element.innerText !== 'Shift' && element.innerText !== 'Ctrl' && element.innerText !== 'Win' && element.innerText !== 'Alt' && element.innerText !== '') {
         addTextareaValue(element);
-      } else if(element.innerText === 'Backspace') {
-        event.preventDefault();
-        console.log('1111');
+      } else {
+        addSpecialKeyActions(element, event);
       } 
-      else if(element.innerText === 'Tab') {
-        event.preventDefault();
-        console.log('222');
-      }   
-      
     }
   })
 })
@@ -208,8 +202,48 @@ window.addEventListener('keyup', (event) => {
 
 function addTextareaValue(element) {
   const textarea = document.querySelector('.keyboard__input');
-  textarea.value += element.innerText;
+  textarea.setRangeText(element.innerText, textarea.selectionStart, textarea.selectionEnd, 'end');
+  textarea.focus();
 }
+
+function addSpecialKeyActions(element, event) {
+  const textarea = document.querySelector('.keyboard__input');
+  let position = textarea.selectionStart;
+  let value = textarea.value;
+ if(element.dataset.index === 'Backspace') {
+    event.preventDefault();
+    console.log('1111');
+  } 
+  if(element.dataset.index === 'Space') {
+    event.preventDefault();
+    textarea.setRangeText(' ', textarea.selectionStart, textarea.selectionEnd, 'end');
+    textarea.focus();
+   } 
+
+  if(element.dataset.index === 'Tab') {
+    event.preventDefault();
+    textarea.setRangeText('    ', textarea.selectionStart, textarea.selectionEnd, 'end');
+    textarea.focus();
+  }
+
+  if(element.dataset.index === 'AltRight') {
+   event.preventDefault();
+  }
+
+  if(element.dataset.index === 'Enter') {
+    event.preventDefault();
+    textarea.value = actionEnterKey(value, position);
+   } 
+}
+
+function actionEnterKey(value, pos) {
+  let arr = value.split('');
+  arr.splice(pos, 0, '\n')
+  let result = arr.join('');
+     return result;
+}
+
+
 
 
   //const key = document.querySelector('.key_backspace');
