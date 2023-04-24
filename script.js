@@ -1,4 +1,6 @@
 import dataEn from './js/dataEn.js';
+import dataRu from './js/dataRu.js';
+
 
 function generateWrapperKeyboard() {
   let container = document.createElement('div');
@@ -20,7 +22,7 @@ function generateWrapperKeyboard() {
   container.append(instruction);
   document.body.prepend(container);
 
-  generateKeyboard(keyboardKeys, dataEn)
+  generateKeyboard(keyboardKeys, dataEn);
 }
 
 generateWrapperKeyboard();
@@ -185,6 +187,11 @@ function addSpecialKeyActions(element, event) {
 
    if(element.dataset.index === 'AltRight') {
     event.preventDefault();
+    getTranslate(dataRu);
+   }
+
+   if(element.dataset.index === 'AltLeft') {
+    event.preventDefault();
    }
 }
 
@@ -216,7 +223,41 @@ function actionCapsLock() {
   })
 }
 
+function getTranslate(data = dataEn) {
+  const keys = document.querySelectorAll('.key'); 
+  keys.forEach(element => {
+    data.forEach(item => {
+      if(element.dataset.index === item.keyCode){
+        element.innerText = item.letter; 
+      }
+    } 
+      )
+  })
+}
 
+function setKeyboardShortcut(func, ...codes) {
+  let pressed = new Set();
+
+  document.addEventListener('keydown', function(event) {
+    pressed.add(event.code);
+
+    for (let code of codes) { 
+      if (!pressed.has(code)) {
+        return;
+      }
+    }
+    pressed.clear();
+
+    func();
+  });
+
+  document.addEventListener('keyup', function(event) {
+    pressed.delete(event.code);
+  });
+
+}
+
+setKeyboardShortcut(getTranslate, "ControlLeft", "AltLeft");
 
 
   //const key = document.querySelector('.key_backspace');
