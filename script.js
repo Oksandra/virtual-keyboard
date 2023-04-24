@@ -177,7 +177,7 @@ window.addEventListener('keydown', (event) => {
   keys.forEach(element => {
     if(event.code === element.dataset.index) {
       element.classList.add('key_active');
-      if(element.innerText !== 'Backspace' && element.innerText !== 'Tab' && element.innerText !== 'Del' && element.innerText !== 'CapsLock' && element.innerText !== 'Enter' && element.innerText !== 'Shift' && element.innerText !== 'Ctrl' && element.innerText !== 'Win' && element.innerText !== 'Alt' && element.innerText !== '') {
+      if(element.innerText !== 'Backspace' && element.innerText !== 'Tab' && element.innerText !== 'Del' && element.innerText !== 'CapsLock' && element.innerText !== 'Enter' && element.innerText !== 'Shift' && element.innerText !== 'Ctrl' && element.innerText !== 'Win' && element.innerText !== 'Alt' && element.innerText !== '' && element.innerText !== '↑' && element.innerText !== '←' && element.innerText !== '↓' && element.innerText !== '→') {
         addTextareaValue(element);
       } else {
         addSpecialKeyActions(element, event);
@@ -237,6 +237,12 @@ function addSpecialKeyActions(element, event) {
   if(element.dataset.index === 'Enter') {
     event.preventDefault();
     textarea.setRangeText('\n', textarea.selectionStart, textarea.selectionEnd, 'end');
+    textarea.focus();
+   } 
+
+   if(element.dataset.index === 'ArrowUp' || element.dataset.index === 'ArrowLeft' || element.dataset.index === 'ArrowDown' || element.dataset.index === 'ArrowRight') {
+    event.preventDefault();
+    textarea.setRangeText(element.innerText, textarea.selectionStart, textarea.selectionEnd, 'end');
     textarea.focus();
    } 
 
