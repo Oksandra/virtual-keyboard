@@ -212,8 +212,16 @@ function addSpecialKeyActions(element, event) {
   let value = textarea.value;
  if(element.dataset.index === 'Backspace') {
     event.preventDefault();
-    console.log('1111');
+    textarea.value = actionBackspaceKey(value, position);
+    textarea.selectionStart = textarea.selectionEnd = position - 1;
   } 
+
+  if(element.dataset.index === 'Delete') {
+    event.preventDefault();
+    textarea.value = actionDeleteKey(value, position);
+    textarea.selectionStart = textarea.selectionEnd = position;
+  } 
+
   if(element.dataset.index === 'Space') {
     event.preventDefault();
     textarea.setRangeText(' ', textarea.selectionStart, textarea.selectionEnd, 'end');
@@ -226,19 +234,27 @@ function addSpecialKeyActions(element, event) {
     textarea.focus();
   }
 
-  if(element.dataset.index === 'AltRight') {
-   event.preventDefault();
-  }
-
   if(element.dataset.index === 'Enter') {
     event.preventDefault();
-    textarea.value = actionEnterKey(value, position);
+    textarea.setRangeText('\n', textarea.selectionStart, textarea.selectionEnd, 'end');
+    textarea.focus();
    } 
+
+   if(element.dataset.index === 'AltRight') {
+    event.preventDefault();
+   }
 }
 
-function actionEnterKey(value, pos) {
+function actionBackspaceKey(value, pos) {
   let arr = value.split('');
-  arr.splice(pos, 0, '\n')
+  arr.splice(pos - 1, 1)
+  let result = arr.join('');
+     return result;
+}
+
+function actionDeleteKey(value, pos) {
+  let arr = value.split('');
+  arr.splice(pos, 1)
   let result = arr.join('');
      return result;
 }
