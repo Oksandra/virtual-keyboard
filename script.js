@@ -175,13 +175,16 @@ function generateKeyboard(container, data) {
 window.addEventListener('keydown', (event) => {
   const keys = document.querySelectorAll('.key');
   keys.forEach(element => {
-    if(event.code === element.dataset.index) {
+    if(event.code === element.dataset.index && event.code !== 'CapsLock') {
       element.classList.add('key_active');
-      if(element.innerText !== 'Backspace' && element.innerText !== 'Tab' && element.innerText !== 'Del' && element.innerText !== 'CapsLock' && element.innerText !== 'Enter' && element.innerText !== 'Shift' && element.innerText !== 'Ctrl' && element.innerText !== 'Win' && element.innerText !== 'Alt' && element.innerText !== '' && element.innerText !== '↑' && element.innerText !== '←' && element.innerText !== '↓' && element.innerText !== '→') {
+      if(element.innerText !== 'Backspace' && element.innerText !== 'Tab' && element.innerText !== 'Del' && element.innerText !== 'Enter' && element.innerText !== 'Shift' && element.innerText !== 'Ctrl' && element.innerText !== 'Win' && element.innerText !== 'Alt' && element.innerText !== '' && element.innerText !== '↑' && element.innerText !== '←' && element.innerText !== '↓' && element.innerText !== '→') {
         addTextareaValue(element);
       } else {
         addSpecialKeyActions(element, event);
       } 
+    } else if (event.code === element.dataset.index && event.code === 'CapsLock'){
+      element.classList.toggle('key_active');
+      actionCapsLock();
     }
   })
 })
@@ -189,7 +192,7 @@ window.addEventListener('keydown', (event) => {
 window.addEventListener('keyup', (event) => {
   const keys = document.querySelectorAll('.key');
   keys.forEach(element => {
-    if(event.code === element.dataset.index) {
+    if(event.code === element.dataset.index && event.code !== 'CapsLock') {
       element.classList.remove('key_active');
       element.classList.add('key_remove');
     }
@@ -244,7 +247,7 @@ function addSpecialKeyActions(element, event) {
     event.preventDefault();
     textarea.setRangeText(element.innerText, textarea.selectionStart, textarea.selectionEnd, 'end');
     textarea.focus();
-   } 
+   }
 
    if(element.dataset.index === 'AltRight') {
     event.preventDefault();
@@ -263,6 +266,20 @@ function actionDeleteKey(value, pos) {
   arr.splice(pos, 1)
   let result = arr.join('');
      return result;
+}
+
+function actionCapsLock() {
+  const capsLock = document.querySelector('.key_caps-lock'); 
+  const keys = document.querySelectorAll('.key'); 
+  keys.forEach(element => {
+    if(element.innerText.length === 1) {
+      if(capsLock.classList.contains('key_active')) {
+        element.innerText = element.innerText.toUpperCase();
+      } else {
+        element.innerText = element.innerText.toLowerCase();
+      }
+    } 
+  })
 }
 
 
