@@ -1,8 +1,24 @@
 import dataEn from './js/dataEn.js';
 import dataRu from './js/dataRu.js';
 
+let lang
+
+function setLocalStorage() {
+  localStorage.setItem('lang', lang);
+}
+
+function getLocalStorage() {
+  if(localStorage.getItem('lang')) {
+    lang = localStorage.getItem('lang');
+} else {
+  lang = 'en';
+}
+}
+
+window.addEventListener('beforeunload', setLocalStorage);
 
 function generateWrapperKeyboard() {
+  getLocalStorage();
   let container = document.createElement('div');
   container.className = 'container';
   let keyboard = document.createElement('div');
@@ -22,7 +38,11 @@ function generateWrapperKeyboard() {
   container.append(instruction);
   document.body.prepend(container);
 
-  generateKeyboard(keyboardKeys, dataEn);
+  if(lang === 'en') {
+    generateKeyboard(keyboardKeys, dataEn);
+  } else {
+    generateKeyboard(keyboardKeys, dataRu);
+  }
 }
 
 generateWrapperKeyboard();
@@ -187,7 +207,6 @@ function addSpecialKeyActions(element, event) {
 
    if(element.dataset.index === 'AltRight') {
     event.preventDefault();
-    getTranslate(dataRu);
    }
 
    if(element.dataset.index === 'AltLeft') {
@@ -225,6 +244,12 @@ function actionCapsLock() {
 
 function getTranslate(data = dataEn) {
   const keys = document.querySelectorAll('.key'); 
+  if(lang === 'en') {
+    data = dataRu;
+    lang = 'ru';
+  } else {
+    lang = 'en'; 
+  }
   keys.forEach(element => {
     data.forEach(item => {
       if(element.dataset.index === item.keyCode){
@@ -233,7 +258,11 @@ function getTranslate(data = dataEn) {
     } 
       )
   })
+  console.log(lang);
+ return lang;
 }
+
+console.log(lang);
 
 function setKeyboardShortcut(func, ...codes) {
   let pressed = new Set();
@@ -258,6 +287,8 @@ function setKeyboardShortcut(func, ...codes) {
 }
 
 setKeyboardShortcut(getTranslate, "ControlLeft", "AltLeft");
+
+
 
 
   //const key = document.querySelector('.key_backspace');
