@@ -244,20 +244,32 @@ function actionCapsLock() {
 
 function getTranslate(data = dataEn) {
   const keys = document.querySelectorAll('.key'); 
+  const capsLock = document.querySelector('.key_caps-lock');
   if(lang === 'en') {
     data = dataRu;
     lang = 'ru';
   } else {
     lang = 'en'; 
   }
-  keys.forEach(element => {
-    data.forEach(item => {
-      if(element.dataset.index === item.keyCode){
-        element.innerText = item.letter; 
-      }
-    } 
-      )
-  })
+  if(capsLock.classList.contains('key_active')) {
+    keys.forEach(element => {
+      data.forEach(item => {
+        if(element.dataset.index === item.keyCode && element.innerText.length === 1){
+          element.innerText = item.letter.toUpperCase(); 
+        }
+      } 
+        )
+    }) 
+  } else {
+    keys.forEach(element => {
+      data.forEach(item => {
+        if(element.dataset.index === item.keyCode){
+          element.innerText = item.letter; 
+        }
+      } 
+        )
+    })
+  }
   console.log(lang);
  return lang;
 }
