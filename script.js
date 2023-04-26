@@ -158,6 +158,27 @@ window.addEventListener('keyup', (event) => {
   })
 })
 
+window.addEventListener('mousedown', (event) => {
+  let clickedButton = event.target;
+  if(clickedButton.classList.contains('key')) {
+    if(clickedButton.innerText !== 'Backspace' && clickedButton.innerText !== 'Tab' && clickedButton.innerText !== 'Del' && clickedButton.innerText !== 'Enter' && clickedButton.innerText !== 'Shift' && clickedButton.innerText !== 'Ctrl' && clickedButton.innerText !== 'Win' && clickedButton.innerText !== 'Alt' && clickedButton.innerText !== '' && clickedButton.innerText !== '↑' && clickedButton.innerText !== '←' && clickedButton.innerText !== '↓' && clickedButton.innerText !== '→' && clickedButton.innerText !== 'CapsLock') {
+      addTextareaValue(clickedButton);
+    } else {
+      addSpecialKeyActions(clickedButton, event);
+    } 
+  }
+   if(clickedButton.innerText === 'CapsLock'){
+    console.log('1111')
+    clickedButton.classList.toggle('key_active');
+    actionCapsLock();
+  }
+
+ 
+})
+
+window.addEventListener('mouseup', (event) => {
+})
+
 
 function addTextareaValue(element) {
   const textarea = document.querySelector('.keyboard__input');

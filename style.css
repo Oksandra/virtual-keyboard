@@ -117,6 +117,21 @@ body {
   margin: 4px;
   transition: .3s all;
   border-radius: 5px;
+  cursor: pointer;
+}
+
+.key:hover {
+  background-color: rgba(245, 244, 230, 0.7);
+}
+
+.key_active:hover {
+  background-color: #f5f4e6;
+  color: black;
+}
+
+.key:active {
+  background-color: #f5f4e6;
+  color: black;
 }
 
 .key_backspace {
