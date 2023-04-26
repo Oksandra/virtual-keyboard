@@ -404,9 +404,10 @@ setKeyboardShortcut(getTranslate, "ControlLeft", "AltLeft");
 function setClickCombination(func, ...codes) {
   let pressed = new Set();
 
-  document.addEventListener('mousedown', function(event) {
-    if(event.target.innerText === 'Ctrl' || event.target.innerText === 'Alt') {
-      pressed.add(event.target.innerText);
+  document.addEventListener('mousedown', (event) => {
+    console.log(event.target.dataset.index)
+    if(event.target.dataset.index === 'ControlLeft' || event.target.dataset.index === 'AltLeft') {
+      pressed.add(event.target.dataset.index);
     }  
 console.log(pressed)
     for (let code of codes) { 
@@ -420,4 +421,4 @@ console.log(pressed)
   });
 }
 
-setClickCombination(getTranslate, "Ctrl", "Alt");
+setClickCombination(getTranslate, "ControlLeft", "AltLeft");
