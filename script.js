@@ -401,4 +401,23 @@ function setKeyboardShortcut(func, ...codes) {
 setKeyboardShortcut(getTranslate, "ControlLeft", "AltLeft");
 
 
+function setClickCombination(func, ...codes) {
+  let pressed = new Set();
 
+  document.addEventListener('mousedown', function(event) {
+    if(event.target.innerText === 'Ctrl' || event.target.innerText === 'Alt') {
+      pressed.add(event.target.innerText);
+    }  
+console.log(pressed)
+    for (let code of codes) { 
+      if (!pressed.has(code)) {
+        return;
+      }
+    }
+    pressed.clear();
+
+    func();
+  });
+}
+
+setClickCombination(getTranslate, "Ctrl", "Alt");
