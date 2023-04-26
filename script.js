@@ -2,6 +2,7 @@ import dataEn from './js/dataEn.js';
 import dataRu from './js/dataRu.js';
 
 let lang
+let onShift = false;
 
 function setLocalStorage() {
   localStorage.setItem('lang', lang);
@@ -156,6 +157,9 @@ window.addEventListener('keyup', (event) => {
       element.classList.remove('key_remove');
   }, 200)
   })
+if(event.code === 'ShiftLeft' || event.code === 'ShiftRight') {
+  deactionShift();
+}
 })
 
 window.addEventListener('mousedown', (event) => {
@@ -177,6 +181,10 @@ window.addEventListener('mousedown', (event) => {
 })
 
 window.addEventListener('mouseup', (event) => {
+  let clickedButton = event.target;
+  if(clickedButton.innerText === 'Shift') {
+    deactionShift();
+  }
 })
 
 
@@ -233,6 +241,11 @@ function addSpecialKeyActions(element, event) {
    if(element.dataset.index === 'AltLeft') {
     event.preventDefault();
    }
+
+   if(element.dataset.index === 'ShiftLeft' || element.dataset.index === 'ShiftRight') {
+    event.preventDefault();
+    actionShift();
+   }
 }
 
 function actionBackspaceKey(value, pos) {
@@ -254,16 +267,82 @@ function actionCapsLock() {
   const keys = document.querySelectorAll('.key'); 
   keys.forEach(element => {
     if(element.innerText.length === 1) {
-      if(capsLock.classList.contains('key_active')) {
+      if(capsLock.classList.contains('key_active') && onShift === false) {
         element.innerText = element.innerText.toUpperCase();
-      } else {
+      } else if(capsLock.classList.contains('key_active') && onShift === true) {
         element.innerText = element.innerText.toLowerCase();
-      }
+      } else if(!capsLock.classList.contains('key_active') && onShift === true) {
+        element.innerText = element.innerText.toUpperCase();
+      } 
+      else {
+        element.innerText = element.innerText.toLowerCase();
+      } 
     } 
   })
 }
 
+function actionShift(data = dataEn) {
+  const keys = document.querySelectorAll('.key');
+  const capsLock = document.querySelector('.key_caps-lock');
+  onShift = true;
+  if(lang === 'en') {
+    data = dataEn;
+  } else {
+    data = dataRu;
+  }
+  keys.forEach(element => {
+    if(element.innerText.length === 1) {
+      if(capsLock.classList.contains('key_active')) {
+        data.forEach(item => {
+          if(element.dataset.index === item.keyCode){
+            element.innerText = item.onShift.toLowerCase();
+          }
+        } 
+          )
+      } else {
+        data.forEach(item => {
+          if(element.dataset.index === item.keyCode){
+            element.innerText = item.onShift; 
+          }
+        } 
+          )
+      }
+    }
+  })
+}
+
+function deactionShift(data = dataEn) {
+  const keys = document.querySelectorAll('.key');
+  const capsLock = document.querySelector('.key_caps-lock');
+  onShift = false;
+  if(lang === 'en') {
+    data = dataEn;
+  } else {
+    data = dataRu;
+  }
+ keys.forEach(element => {
+  if(element.innerText.length === 1) {
+    if(capsLock.classList.contains('key_active')) {
+      data.forEach(item => {
+        if(element.dataset.index === item.keyCode){
+          element.innerText = item.letter.toUpperCase(); 
+        }
+      } 
+        )
+    } else {
+      data.forEach(item => {
+        if(element.dataset.index === item.keyCode){
+          element.innerText = item.letter; 
+        }
+      } 
+        )
+    }
+  }
+  })
+}
+
 function getTranslate(data = dataEn) {
+  console.log(onShift);
   const keys = document.querySelectorAll('.key'); 
   const capsLock = document.querySelector('.key_caps-lock');
   if(lang === 'en') {
@@ -272,7 +351,7 @@ function getTranslate(data = dataEn) {
   } else {
     lang = 'en'; 
   }
-  if(capsLock.classList.contains('key_active')) {
+  if(capsLock.classList.contains('key_active') || onShift === true) {
     keys.forEach(element => {
       data.forEach(item => {
         if(element.dataset.index === item.keyCode && element.innerText.length === 1){
@@ -320,16 +399,6 @@ function setKeyboardShortcut(func, ...codes) {
 }
 
 setKeyboardShortcut(getTranslate, "ControlLeft", "AltLeft");
-
-
-
-
-  //const key = document.querySelector('.key_backspace');
- // console.log(key);
-  //key.onkeydown = function(event) {
-  //  event.preventDefault();
-   // console.log('ffff');
-  //};
 
 
 
