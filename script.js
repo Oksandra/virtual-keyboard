@@ -34,9 +34,13 @@ function generateWrapperKeyboard() {
   keyboard.append(keyboardKeys);
   let instruction = document.createElement('p');
   instruction.className = 'instruction';
-  instruction.innerText = 'The keyboard was created in the Windows operating system';
+  instruction.innerText = 'The keyboard has been created in the Windows.';
+  let language = document.createElement('p');
+  language.innerText = 'Use Left Ctrl + Alt to switch language (keyboard or mouse)';
+  language.className = 'instruction';
   container.append(keyboard);
   container.append(instruction);
+  container.append(language);
   document.body.prepend(container);
 
   if(lang === 'en') {
