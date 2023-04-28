@@ -101,6 +101,9 @@ function generateWrapperKeyboard() {
   getLocalStorage();
   const container = document.createElement('div');
   container.className = 'container';
+  const title = document.createElement('h1');
+  title.className = 'title';
+  title.innerText = 'Virtual Keyboard';
   const keyboard = document.createElement('div');
   keyboard.className = 'keyboard';
   const textarea = document.createElement('textarea');
@@ -117,6 +120,7 @@ function generateWrapperKeyboard() {
   const language = document.createElement('p');
   language.innerText = 'Use Left Ctrl + Alt to switch language (keyboard or mouse)';
   language.className = 'instruction';
+  container.append(title);
   container.append(keyboard);
   container.append(instruction);
   container.append(language);
@@ -151,7 +155,7 @@ function actionDeleteKey(value, pos) {
   return result;
 }
 
-function actionShift(data) {
+function actionShift(data = dataEn) {
   const keys = document.querySelectorAll('.key');
   const capsLock = document.querySelector('.key_caps-lock');
   let value = data;
@@ -218,15 +222,15 @@ function addSpecialKeyActions(element, event) {
   if (element.dataset.index === 'Backspace') {
     event.preventDefault();
     textarea.value = actionBackspaceKey(value, position);
-    textarea.selectionStart = textarea.selectionEnd;
     textarea.selectionEnd = position - 1;
+    textarea.selectionStart = textarea.selectionEnd;
   }
 
   if (element.dataset.index === 'Delete') {
     event.preventDefault();
     textarea.value = actionDeleteKey(value, position);
-    textarea.selectionStart = textarea.selectionEnd;
     textarea.selectionEnd = position;
+    textarea.selectionStart = textarea.selectionEnd;
   }
 
   if (element.dataset.index === 'Space') {
@@ -339,6 +343,11 @@ window.addEventListener('mouseup', (event) => {
   if (clickedButton.innerText === 'Shift') {
     deactionShift();
   }
+});
+
+window.addEventListener('click', () => {
+  const textarea = document.querySelector('.keyboard__input');
+  textarea.focus();
 });
 
 function getTranslate(data = dataEn) {
