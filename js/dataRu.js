@@ -39,7 +39,7 @@ const dataRu = [
   { letter: 'л', onShift: 'Л', keyCode: 'KeyK' },
   { letter: 'д', onShift: 'Д', keyCode: 'KeyL' },
   { letter: 'ж', onShift: 'Ж', keyCode: 'Semicolon' },
-  { letter: "э", onShift: 'Э', keyCode: 'Quote' },
+  { letter: 'э', onShift: 'Э', keyCode: 'Quote' },
   { letter: 'Enter', onShift: 'Enter', keyCode: 'Enter' },
   { letter: 'Shift', onShift: 'Shift', keyCode: 'ShiftLeft' },
   { letter: 'я', onShift: 'Я', keyCode: 'KeyZ' },
