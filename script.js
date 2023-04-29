@@ -323,6 +323,10 @@ window.addEventListener('keyup', (event) => {
   });
   if (event.code === 'ShiftLeft' || event.code === 'ShiftRight') {
     deactionShift();
+    const shiftLeft = document.querySelector('[data-index="ShiftLeft"]');
+    const shiftRight = document.querySelector('[data-index="ShiftRight"]');
+    shiftLeft.classList.remove('key_active');
+    shiftRight.classList.remove('key_active');
   }
 });
 
@@ -363,7 +367,16 @@ function getTranslate(data = dataEn) {
   } else {
     lang = 'en';
   }
-  if (capsLock.classList.contains('key_active') || onShift === true) {
+  if (capsLock.classList.contains('key_active') && onShift === true) {
+    keys.forEach((element) => {
+      const elem = element;
+      value.forEach((item) => {
+        if (elem.dataset.index === item.keyCode && elem.innerText.length === 1) {
+          elem.innerText = item.letter;
+        }
+      });
+    });
+  } else if (capsLock.classList.contains('key_active') || onShift === true) {
     keys.forEach((element) => {
       const elem = element;
       value.forEach((item) => {
