@@ -390,7 +390,6 @@ function setKeyboardShortcut(func, ...codes) {
 
   document.addEventListener('keydown', (event) => {
     pressed.add(event.code);
-
     const allCodesPressed = codes.every((code) => pressed.has(code));
     if (allCodesPressed) {
       pressed.clear();
@@ -409,13 +408,21 @@ function setClickCombination(func, ...codes) {
   const pressed = new Set();
 
   document.addEventListener('mousedown', (event) => {
-    if (event.target.dataset.index === 'ControlLeft' || event.target.dataset.index === 'AltLeft') {
-      pressed.add(event.target.dataset.index);
+    pressed.add(event.target.dataset.index);
+    if (pressed.size === 2) {
+      const allCodesPressed = codes.every((code) => pressed.has(code));
+      if (allCodesPressed) {
+        pressed.clear();
+        func();
+      } else {
+        pressed.clear();
+      }
     }
-    const allCodesPressed = codes.every((code) => pressed.has(code));
-    if (allCodesPressed) {
-      pressed.clear();
-      func();
+  });
+
+  document.addEventListener('mouseup', (event) => {
+    if (event.target.dataset.index !== 'ControlLeft' && event.target.dataset.index !== 'AltLeft') {
+      pressed.delete(event.target.dataset.index);
     }
   });
 }
